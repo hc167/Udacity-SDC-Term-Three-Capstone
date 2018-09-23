@@ -39,12 +39,12 @@ To set up port forwarding, please refer to the [instructions from term 2](https:
 
 1. Clone the project repository
 ```bash
-git clone https://github.com/udacity/CarND-Capstone.git
+git clone https://github.com/hc167/Udacity-SDC-Term-Three-Capstone.git Capstone0
 ```
 
 2. Install python dependencies
 ```bash
-cd CarND-Capstone
+cd Capstone0
 pip install -r requirements.txt
 ```
 3. Make and run styx
