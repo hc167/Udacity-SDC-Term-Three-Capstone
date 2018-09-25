@@ -40,7 +40,7 @@ class Controller(object):
         # Return throttle, brake, steer
         if not dbw_enabled:
             self.throttle_controller.reset()
-            0., 0., 0.
+            return 0., 0., 0.
 
         current_vel = self.vel_lpf.filt(current_vel)
 
