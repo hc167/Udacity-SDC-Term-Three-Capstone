@@ -28,14 +28,6 @@ class WaypointUpdater(object):
     def __init__(self):
         rospy.init_node('waypoint_updater')
 
-       # TODO: Add other member variables you need below
-        self.base_lane = None
-        self.pose = None
-        self.stopline_wp_idx = -1
-        self.waypoints= None
-        self.waypoint_tree = None
-        self.waypoints_2d = None
-        self.current_velocity = 0.0
 
         #Subscriber
         rospy.Subscriber('/current_pose', PoseStamped, self.pose_cb)
@@ -46,6 +38,17 @@ class WaypointUpdater(object):
         #Publisher
         self.final_waypoints_pub = rospy.Publisher('final_waypoints', Lane, queue_size=1)
 
+
+        # TODO: Add other member variables you need below
+        self.base_lane = None
+        self.pose = None
+        self.stopline_wp_idx = -1
+        self.waypoint_tree = None
+        self.waypoints_2d = None
+        self.current_velocity = 0.0
+
+
+        ##loop and publish waypoints
         self.loop()
 
     def loop(self):
@@ -54,11 +57,12 @@ class WaypointUpdater(object):
             if self.pose and self.base_lane:
                 self.publish_waypoints()
             rate.sleep()
-
+        
     def publish_waypoints(self, closet_idx):
         final_line = self.generate_lane()
         self.final_waypoints_pub.publish(final_lane)
 
+        ## base_wp, decelerate wp --> lane.wp
     def generate_lane(self):
         lane = Lane()
 
@@ -73,6 +77,7 @@ class WaypointUpdater(object):
         
         return lane
 
+        ## decelerate wp
     def decelerate_waypoints(self, waypoints, closest_idx):
         temp =[]
         for i, wp in enumerate(waypoints):
@@ -123,7 +128,7 @@ class WaypointUpdater(object):
  
     def traffic_cb(self, msg):
         # TODO: Callback for /traffic_waypoint message. Implement
-        self.traffic_waypoint = msg
+        self.stopline_wp_idx = msg.data
       
 
     def obstacle_cb(self, msg):
