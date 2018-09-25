@@ -43,8 +43,8 @@ class WaypointUpdater(object):
         self.base_lane = None
         self.pose = None
 
-        #self.stopline_wp_idx = -1
-        self.stopline_wp_idx = 200
+        self.stopline_wp_idx = -1
+        #self.stopline_wp_idx = 200
         self.waypoint_tree = None
         self.waypoints_2d = None
         self.current_velocity = 0.0
