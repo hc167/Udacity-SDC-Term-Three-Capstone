@@ -6,7 +6,7 @@ ONE_MPH = 0.44704
 class Controller(object):
     def __init__(self, *args, **kwargs):
         # TODO: Implement
-        self.yaw_controller = YawController(wheel_base, steer_ratio = 0.1, max_lat_accel, max_steer_angle)
+        self.yaw_controller = YawController(wheel_base, steer_ratio,  0.1, max_lat_accel, max_steer_angle)
 
         kp = 0.3
         ki = 0.1
