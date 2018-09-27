@@ -60,7 +60,7 @@ class WaypointUpdater(object):
                 self.publish_waypoints()
             rate.sleep()
         
-    def publish_waypoints(self, closet_idx):
+    def publish_waypoints(self, closet_idx=None):
         final_line = self.generate_lane()
         self.final_waypoints_pub.publish(final_lane)
 
