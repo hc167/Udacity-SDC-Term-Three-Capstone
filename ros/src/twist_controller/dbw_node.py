@@ -93,7 +93,7 @@ class DBWNode(object):
             # if <dbw is enabled>:
             #   self.publish(throttle, brake, steer)
             if not None in (self.current_vel, self.linear_vel, self.angular_vel):
-                self.throttle, self.brake, self.steering = self.controller.control(self.current_vel,self.dbw_enabled,self.linear_vel,self.angular_vel)
+                self.throttle, self.brake, self.steering = self.controller.control(self.current_vel,self.curr_ang_vel,self.dbw_enabled,self.linear_vel,self.angular_vel)
             if self.dbw_enabled:
                 self.publish(self.throttle, self.brake, self.steering)
             rate.sleep()
@@ -107,7 +107,8 @@ class DBWNode(object):
 
     def velocity_cb(self,msg):
         self.current_vel = msg.twist.linear.x
-    
+        self.curr_ang_vel = msg.twist.angular.z
+
     def publish(self, throttle, brake, steer):
         tcmd = ThrottleCmd()
         tcmd.enable = True

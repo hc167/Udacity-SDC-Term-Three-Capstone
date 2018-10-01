@@ -32,7 +32,7 @@ class Controller(object):
 
         self.last_time = rospy.get_time()
 
-    def control(self, current_vel, dbw_enabled, linear_vel, angular_vel):
+    def control(self, current_vel, curr_ang_vel, dbw_enabled, linear_vel, angular_vel):
         # TODO: Change the arg, kwarg list to suit your needs
         # Return throttle, brake, steer
         if not dbw_enabled:
@@ -41,9 +41,9 @@ class Controller(object):
 
         current_vel = self.vel_lpf.filt(current_vel)
 
-        steering = self.yaw_controller.get_steering(linear_vel, angular_vel, current_vel)
+        steering = self.yaw_controller.get_steering(linear_vel, angular_vel, current_vel, curr_ang_vel)
 
-        vel_error = linear_vel = current_vel
+        vel_error = linear_vel - current_vel
         self.last_vel = current_vel
 
         current_time = rospy.get_time()
