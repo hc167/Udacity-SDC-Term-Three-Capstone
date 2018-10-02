@@ -20,6 +20,8 @@ class TLDetector(object):
 
         self.pose = None
         self.waypoints = None
+        self.waypoints_2d = None
+        self.waypoint_tree = None
         self.camera_image = None
         self.lights = []
 
@@ -57,6 +59,10 @@ class TLDetector(object):
 
     def waypoints_cb(self, waypoints):
         self.waypoints = waypoints
+        if not self.waypoints_2d:
+            self.waypoints_2d = [[waypoint.pose.pose.position.x, waypoint.pose.pose.position.y] for waypoint in waypoints.waypoints]
+            #build a k-d tree to find the closest waypoint to car
+            self.waypoint_tree = KDTree(self.waypoints_2d)
 
     def traffic_cb(self, msg):
         self.lights = msg.lights
@@ -102,6 +108,7 @@ class TLDetector(object):
 
         """
         #TODO implement
+        x, y = pose.pose.position.x, pose.pose.position.y
         return self.waypoint_tree.query([x, y], 1)[1]
 
     def get_light_state(self, light):
