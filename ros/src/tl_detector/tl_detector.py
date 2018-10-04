@@ -38,6 +38,9 @@ class TLDetector(object):
         sub3 = rospy.Subscriber('/vehicle/traffic_lights', TrafficLightArray, self.traffic_cb)
         sub6 = rospy.Subscriber('/image_color', Image, self.image_cb)
 
+	# darknet_ros node that handle object detection (in our case, traffic light)
+	sub5 = rospy.Subscriber('/darknet_ros/bounding_boxes', BoundingBoxes, self.tl_detection_cb)
+
         config_string = rospy.get_param("/traffic_light_config")
         self.config = yaml.load(config_string)
 
@@ -96,6 +99,10 @@ class TLDetector(object):
         else:
             self.upcoming_red_light_pub.publish(Int32(self.last_wp))
         self.state_count += 1
+
+    def tl_detection_cb(self, msg):
+	#TODO implementation
+	pass
 
     def get_closest_waypoint(self, x, y):
         """Identifies the closest path waypoint to the given position
