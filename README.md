@@ -47,6 +47,12 @@ cd ~/catkin_ws
 catkin_make
 ```
 
+## ROS Architecture
+
+ROS node architecture with the publish and subscribe topics. 
+
+![alt text](./Car_system.png)
+
 ### Usage
 
 1. Clone the project repository
