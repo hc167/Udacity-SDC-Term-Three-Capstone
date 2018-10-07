@@ -60,13 +60,16 @@ bool YoloObjectDetector::readParameters()
   nodeHandle_.param("image_view/enable_console_output", enableConsoleOutput_, false);
 
   // Check if Xserver is running on Linux.
-  if (XOpenDisplay(NULL)) {
+
+//  if (XOpenDisplay(NULL)) {
     // Do nothing!
-    ROS_INFO("[YoloObjectDetector] Xserver is running.");
-  } else {
-    ROS_INFO("[YoloObjectDetector] Xserver is not running.");
-    viewImage_ = false;
-  }
+//    ROS_INFO("[YoloObjectDetector] Xserver is running.");
+//  } else {
+//    ROS_INFO("[YoloObjectDetector] Xserver is not running.");
+//    viewImage_ = false;
+//  }
+
+  viewImage_ = false;
 
   // Set vector sizes.
   nodeHandle_.param("yolo_model/detection_classes/names", classLabels_,
