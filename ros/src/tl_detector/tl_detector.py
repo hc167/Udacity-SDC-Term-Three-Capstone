@@ -63,6 +63,9 @@ class TLDetector(object):
 	self.counter = 0
 	self.save_for_train = True
 
+	# if set to 1, we are in simulator mode. 0 in real road
+	self.sim_mode = rospy.get_param('/simulator_mode')
+
         rospy.spin()
 
     def pose_cb(self, msg):
@@ -109,10 +112,14 @@ class TLDetector(object):
         self.state_count += 1
 
     def tl_detection_cb(self, msg):
-	#TODO implementation
+
+	prob = 0.3
+
+	if int(self.sim_mode) == 1:
+	    prob = 0.85
 
 	for box in msg.bounding_boxes:
-	    if str(box.Class) == 'traffic light' and box.probability >= 0.85:
+	    if str(box.Class) == 'traffic light' and box.probability >= prob:
 		cv_image = self.bridge.imgmsg_to_cv2(self.camera_image, "bgr8")
 		light_image = cv_image[box.ymin:box.ymax, box.xmin:box.xmax]
 		if self.save_for_train:
@@ -120,10 +127,13 @@ class TLDetector(object):
 		    if not os.path.exists(os.path.dirname(dir_name)):
 			os.makedirs(os.path.dirname(dir_name))
 
-		    cv2.imwrite(dir_name + 'image' + str(self.counter) +'.png', light_image)
-		    self.counter += 1 
+		    if int(self.sim_mode) == 1:
+			cv2.imwrite(dir_name + 'imagett' + str(self.counter) +'.png', light_image)
+		    else:
+			cv2.imwrite(dir_name + 'image' + str(self.counter) +'.png', light_image)
+		    self.counter += 1
+		self.light_classifier.detect_state(light_image)
 
-	pass
 
     def get_closest_waypoint(self, x, y):
         """Identifies the closest path waypoint to the given position
