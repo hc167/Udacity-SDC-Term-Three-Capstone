@@ -231,7 +231,7 @@ bool PurePursuit::interpolateNextTarget(int next_waypoint, geometry_msgs::Point 
 
 bool PurePursuit::verifyFollowing() const
 {
-  return false;
+  return false; // skip checking. Always assume not following to reduce delay.
 
   double a = 0;
   double b = 0;
