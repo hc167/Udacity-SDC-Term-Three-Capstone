@@ -12,6 +12,7 @@ import tf
 import cv2
 import yaml
 import numpy as np
+import os
 
 from darknet_ros_msgs.msg import BoundingBox
 from darknet_ros_msgs.msg import BoundingBoxes
@@ -58,6 +59,9 @@ class TLDetector(object):
         self.last_state = TrafficLight.UNKNOWN
         self.last_wp = -1
         self.state_count = 0
+
+	self.counter = 0
+	self.save_for_train = True
 
         rospy.spin()
 
@@ -106,6 +110,19 @@ class TLDetector(object):
 
     def tl_detection_cb(self, msg):
 	#TODO implementation
+
+	for box in msg.bounding_boxes:
+	    if str(box.Class) == 'traffic light' and box.probability >= 0.85:
+		cv_image = self.bridge.imgmsg_to_cv2(self.camera_image, "bgr8")
+		light_image = cv_image[box.ymin:box.ymax, box.xmin:box.xmax]
+		if self.save_for_train:
+		    dir_name = './img/'
+		    if not os.path.exists(os.path.dirname(dir_name)):
+			os.makedirs(os.path.dirname(dir_name))
+
+		    cv2.imwrite(dir_name + 'image' + str(self.counter) +'.png', light_image)
+		    self.counter += 1 
+
 	pass
 
     def get_closest_waypoint(self, x, y):
