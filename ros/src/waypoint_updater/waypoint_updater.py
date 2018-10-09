@@ -88,7 +88,7 @@ class WaypointUpdater(object):
             
             stop_idx = max(self.stopline_wp_idx - closest_idx - 2, 0) # two wps back from line so front car stops at line
             dist = self.distance(waypoints, i, stop_idx)
-            vel = math.sqrt(2* MAX * dist)
+            vel = math.sqrt(2* MAX_DECEL * dist)
             if vel < 1:
                 vel = 0
             
