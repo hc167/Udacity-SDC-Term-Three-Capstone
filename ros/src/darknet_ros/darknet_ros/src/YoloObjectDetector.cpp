@@ -132,42 +132,42 @@ void YoloObjectDetector::init()
   // Initialize publisher and subscriber.
   std::string cameraTopicName;
   int cameraQueueSize;
-  std::string objectDetectorTopicName;
-  int objectDetectorQueueSize;
-  bool objectDetectorLatch;
+//  std::string objectDetectorTopicName;
+//  int objectDetectorQueueSize;
+//  bool objectDetectorLatch;
   std::string boundingBoxesTopicName;
   int boundingBoxesQueueSize;
   bool boundingBoxesLatch;
-  std::string detectionImageTopicName;
-  int detectionImageQueueSize;
-  bool detectionImageLatch;
+//  std::string detectionImageTopicName;
+//  int detectionImageQueueSize;
+//  bool detectionImageLatch;
 
   nodeHandle_.param("subscribers/camera_reading/topic", cameraTopicName,
                     std::string("/camera/image_raw"));
   nodeHandle_.param("subscribers/camera_reading/queue_size", cameraQueueSize, 1);
-  nodeHandle_.param("publishers/object_detector/topic", objectDetectorTopicName,
-                    std::string("found_object"));
-  nodeHandle_.param("publishers/object_detector/queue_size", objectDetectorQueueSize, 1);
-  nodeHandle_.param("publishers/object_detector/latch", objectDetectorLatch, false);
+//  nodeHandle_.param("publishers/object_detector/topic", objectDetectorTopicName,
+//                    std::string("found_object"));
+//  nodeHandle_.param("publishers/object_detector/queue_size", objectDetectorQueueSize, 1);
+//  nodeHandle_.param("publishers/object_detector/latch", objectDetectorLatch, false);
   nodeHandle_.param("publishers/bounding_boxes/topic", boundingBoxesTopicName,
                     std::string("bounding_boxes"));
   nodeHandle_.param("publishers/bounding_boxes/queue_size", boundingBoxesQueueSize, 1);
   nodeHandle_.param("publishers/bounding_boxes/latch", boundingBoxesLatch, false);
-  nodeHandle_.param("publishers/detection_image/topic", detectionImageTopicName,
-                    std::string("detection_image"));
-  nodeHandle_.param("publishers/detection_image/queue_size", detectionImageQueueSize, 1);
-  nodeHandle_.param("publishers/detection_image/latch", detectionImageLatch, true);
+//  nodeHandle_.param("publishers/detection_image/topic", detectionImageTopicName,
+//                    std::string("detection_image"));
+//  nodeHandle_.param("publishers/detection_image/queue_size", detectionImageQueueSize, 1);
+//  nodeHandle_.param("publishers/detection_image/latch", detectionImageLatch, true);
 
   imageSubscriber_ = imageTransport_.subscribe(cameraTopicName, cameraQueueSize,
                                                &YoloObjectDetector::cameraCallback, this);
-  objectPublisher_ = nodeHandle_.advertise<std_msgs::Int8>(objectDetectorTopicName,
-                                                           objectDetectorQueueSize,
-                                                           objectDetectorLatch);
+//  objectPublisher_ = nodeHandle_.advertise<std_msgs::Int8>(objectDetectorTopicName,
+//                                                           objectDetectorQueueSize,
+//                                                           objectDetectorLatch);
   boundingBoxesPublisher_ = nodeHandle_.advertise<darknet_ros_msgs::BoundingBoxes>(
       boundingBoxesTopicName, boundingBoxesQueueSize, boundingBoxesLatch);
-  detectionImagePublisher_ = nodeHandle_.advertise<sensor_msgs::Image>(detectionImageTopicName,
-                                                                       detectionImageQueueSize,
-                                                                       detectionImageLatch);
+//  detectionImagePublisher_ = nodeHandle_.advertise<sensor_msgs::Image>(detectionImageTopicName,
+//                                                                       detectionImageQueueSize,
+//                                                                       detectionImageLatch);
 
   // Action servers.
   std::string checkForObjectsActionName;
