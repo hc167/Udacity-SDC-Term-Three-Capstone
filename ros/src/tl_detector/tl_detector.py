@@ -127,10 +127,9 @@ class TLDetector(object):
 		    if not os.path.exists(os.path.dirname(dir_name)):
 			os.makedirs(os.path.dirname(dir_name))
 
-		    if int(self.sim_mode) == 1:
-			cv2.imwrite(dir_name + 'imagett' + str(self.counter) +'.png', light_image)
-		    else:
+		    if self.save_for_train:
 			cv2.imwrite(dir_name + 'image' + str(self.counter) +'.png', light_image)
+			
 		    self.counter += 1
 		self.light_classifier.detect_state(light_image)
 
