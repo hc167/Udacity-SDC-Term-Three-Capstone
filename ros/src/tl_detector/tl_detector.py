@@ -43,8 +43,8 @@ class TLDetector(object):
         sub3 = rospy.Subscriber('/vehicle/traffic_lights', TrafficLightArray, self.traffic_cb)
         sub6 = rospy.Subscriber('/image_color', Image, self.image_cb)
 
-	# darknet_ros node that handle object detection (in our case, traffic light)
-	sub5 = rospy.Subscriber('/darknet_ros/bounding_boxes', BoundingBoxes, self.tl_detection_cb)
+        # darknet_ros node that handle object detection (in our case, traffic light)
+        sub5 = rospy.Subscriber('/darknet_ros/bounding_boxes', BoundingBoxes, self.tl_detection_cb)
 
         config_string = rospy.get_param("/traffic_light_config")
         self.config = yaml.load(config_string)
@@ -60,11 +60,11 @@ class TLDetector(object):
         self.last_wp = -1
         self.state_count = 0
 
-	self.counter = 0
-	self.save_for_train = True
+        self.counter = 0
+        self.save_for_train = True
 
-	# if set to 1, we are in simulator mode. 0 in real road
-	self.sim_mode = rospy.get_param('/simulator_mode')
+        # if set to 1, we are in simulator mode. 0 in real road
+        self.sim_mode = rospy.get_param('/simulator_mode')
 
         rospy.spin()
 
@@ -113,26 +113,22 @@ class TLDetector(object):
 
     def tl_detection_cb(self, msg):
 
-	prob = 0.3
+        prob = 0.3
+        if int(self.sim_mode) == 1:
+            prob = 0.85
 
-	if int(self.sim_mode) == 1:
-	    prob = 0.85
-
-	for box in msg.bounding_boxes:
-	    if str(box.Class) == 'traffic light' and box.probability >= prob:
-		cv_image = self.bridge.imgmsg_to_cv2(self.camera_image, "bgr8")
-		light_image = cv_image[box.ymin:box.ymax, box.xmin:box.xmax]
-		if self.save_for_train:
-		    dir_name = './img/'
-		    if not os.path.exists(os.path.dirname(dir_name)):
-			os.makedirs(os.path.dirname(dir_name))
-
-		    if self.save_for_train:
-			cv2.imwrite(dir_name + 'image' + str(self.counter) +'.png', light_image)
-			
-		    self.counter += 1
-		self.light_classifier.detect_state(light_image)
-
+        for box in msg.bounding_boxes:
+            ratio = (float)(box.ymax - box.ymin) / (float)(box.xmax - box.xmin) 
+            if str(box.Class) == 'traffic light' and box.probability >= prob and ratio >= 2.5:
+                cv_image = self.bridge.imgmsg_to_cv2(self.camera_image, "bgr8")
+                light_image = cv_image[box.ymin:box.ymax, box.xmin:box.xmax]
+                if self.save_for_train:
+                    dir_name = './img/'
+                    if not os.path.exists(os.path.dirname(dir_name)):
+                        os.makedirs(os.path.dirname(dir_name))
+                    cv2.imwrite(dir_name + 'image' + str(self.counter) +'.png', light_image)
+                    self.counter += 1
+                self.light_classifier.detect_state(light_image)
 
     def get_closest_waypoint(self, x, y):
         """Identifies the closest path waypoint to the given position
