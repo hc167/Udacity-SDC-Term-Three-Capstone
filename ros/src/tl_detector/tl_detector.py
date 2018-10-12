@@ -119,7 +119,7 @@ class TLDetector(object):
 
         for box in msg.bounding_boxes:
             ratio = (float)(box.ymax - box.ymin) / (float)(box.xmax - box.xmin) 
-            if str(box.Class) == 'traffic light' and box.probability >= prob and ratio >= 2.5:
+            if str(box.Class) == 'traffic light' and box.probability >= prob and ratio >= 2.5 and ratio < 3.5:
                 cv_image = self.bridge.imgmsg_to_cv2(self.camera_image, "bgr8")
                 light_image = cv_image[box.ymin:box.ymax, box.xmin:box.xmax]
                 if self.save_for_train:
