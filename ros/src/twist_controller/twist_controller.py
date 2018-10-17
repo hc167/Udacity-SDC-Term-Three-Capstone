@@ -33,7 +33,7 @@ class Controller(object):
 
         self.last_time = rospy.get_time()
 
-        pass
+        
 
     def control(self, current_vel, curr_ang_vel, dbw_enabled, linear_vel, angular_vel):
         # TODO: Change the arg, kwarg list to suit your needs
