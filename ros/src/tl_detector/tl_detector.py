@@ -13,6 +13,7 @@ import cv2
 import yaml
 import numpy as np
 import os
+import math
 
 from darknet_ros_msgs.msg import BoundingBox
 from darknet_ros_msgs.msg import BoundingBoxes
@@ -29,6 +30,7 @@ class TLDetector(object):
         self.waypoint_tree = None
         self.camera_image = None
         self.lights = []
+        self.detectedlights = None
 
         sub1 = rospy.Subscriber('/current_pose', PoseStamped, self.pose_cb)
         sub2 = rospy.Subscriber('/base_waypoints', Lane, self.waypoints_cb)
@@ -113,13 +115,14 @@ class TLDetector(object):
 
     def tl_detection_cb(self, msg):
 
+        self.detectedlights = []
         prob = 0.3
         if int(self.sim_mode) == 1:
             prob = 0.85
 
         for box in msg.bounding_boxes:
-            ratio = (float)(box.ymax - box.ymin) / (float)(box.xmax - box.xmin) 
-            if str(box.Class) == 'traffic light' and box.probability >= prob and ratio >= 2.5 and ratio < 3.5:
+#            ratio = (float)(box.ymax - box.ymin) / (float)(box.xmax - box.xmin) 
+            if str(box.Class) == 'traffic light' and box.probability >= prob: # and ratio >= 2.5 and ratio < 3.5:
                 cv_image = self.bridge.imgmsg_to_cv2(self.camera_image, "bgr8")
                 light_image = cv_image[box.ymin:box.ymax, box.xmin:box.xmax]
                 if self.save_for_train:
@@ -128,7 +131,8 @@ class TLDetector(object):
                         os.makedirs(os.path.dirname(dir_name))
                     cv2.imwrite(dir_name + 'image' + str(self.counter) +'.png', light_image)
                     self.counter += 1
-                self.light_classifier.detect_state(light_image)
+                if math.sqrt((box.xmin - box.xmax)**2 + (box.ymin - box.ymax)**2) >= 25:
+                    self.detectedlights.append(light_image)
 
     def get_closest_waypoint(self, x, y):
         """Identifies the closest path waypoint to the given position
@@ -169,16 +173,16 @@ class TLDetector(object):
         """
 
         # For testing, just return the light state
-        return light.state
+#        return light.state
 
         if(not self.has_image):
             self.prev_light_loc = None
             return False
 
-        cv_image = self.bridge.imgmsg_to_cv2(self.camera_image, "bgr8")
+#        cv_image = self.bridge.imgmsg_to_cv2(self.camera_image, "bgr8")
 
         #Get classification
-        return self.light_classifier.get_classification(cv_image)
+        return self.light_classifier.get_classification(self.detectedlights)
 
     def process_traffic_lights(self):
         """Finds closest visible traffic light, if one exists, and determines its
