@@ -63,7 +63,7 @@ class TLDetector(object):
         self.state_count = 0
 
         self.counter = 0
-        self.save_for_train = True
+        self.save_for_train = False
 
         # if set to 1, we are in simulator mode. 0 in real road
         self.sim_mode = rospy.get_param('/simulator_mode')
