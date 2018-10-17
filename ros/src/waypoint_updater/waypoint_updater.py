@@ -29,7 +29,7 @@ class WaypointUpdater(object):
 	# TODO: Add other member variables you need below
         self.pose = None
         self.base_lane = None
-        self.stopline_wp_idx = int(-1)
+        self.stopline_wp_idx = None
         self.waypoints_2d = None  # 2D points to create KDTree for the base point
         self.waypoint_tree = None  # KDTree to look up the closet waypoint       
 
@@ -179,8 +179,7 @@ class WaypointUpdater(object):
     def traffic_cb(self, msg):
         # TODO: Callback for /traffic_waypoint message. Implement
         # stopline waypoint index(int32)
-	#self.stopline_wp_idx = msg.data
-	pass
+	self.stopline_wp_idx = msg.data
 
     def obstacle_cb(self, msg):
         # TODO: Callback for /obstacle_waypoint message. We will implement it later
