@@ -47,6 +47,13 @@ cd ~/catkin_ws
 catkin_make
 ```
 
+### Prerequisite for Udacity Workspace
+Apply the following commands (one at a time)
+```bash
+apt update
+apt install ros-kinetic-dbw-mkz-msgs
+```
+
 ## ROS Architecture
 
 ROS node architecture with the publish and subscribe topics. 
