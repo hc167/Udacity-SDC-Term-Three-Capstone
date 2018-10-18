@@ -9,7 +9,7 @@
 #### Youtube Video Demo: https://www.youtube.com/watch?v=h8KuF9HO1Jw
 
 #### Big Thanks to: #### 
-- https://github.com/leggedrobotics/darknet_ros , darnet_ros, which is used in the project.
+- https://github.com/leggedrobotics/darknet_ros , darknet_ros, which is used in the project.
 - And https://pjreddie.com/darknet/yolo/ , Joseph Redmon, the original author of darknet & YOLO.
 
 
