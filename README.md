@@ -1,10 +1,10 @@
 ## TheRacingSDC ##
 
-- Hiu Chan - Team Lead
-- Yuda Wang
-- Ran Yan
-- Zhening (Sirius) Zhang
-- Praveen Kumar Marothu
+- Hiu Chan - Team Lead (hiu_chan@hotmail.com)
+- Yuda Wang (yuda@berkeley.edu)
+- Ran Yan (896521722@qq.com)
+- Zhening (Sirius) Zhang (zznzhang@ucdavis.edu)
+- Praveen Kumar Marothu (praveen.marothu@gmail.com)
 
 #### Youtube Video Demo: https://www.youtube.com/watch?v=h8KuF9HO1Jw
 
