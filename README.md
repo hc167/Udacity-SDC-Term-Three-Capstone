@@ -6,7 +6,7 @@
 - Zhening (Sirius) Zhang
 - Praveen Kumar Marothu
 
-#### Youtube Video Demo: #### https://www.youtube.com/watch?v=h8KuF9HO1Jw
+#### Youtube Video Demo: https://www.youtube.com/watch?v=h8KuF9HO1Jw
 
 #### Big Thanks to: #### 
 - https://github.com/leggedrobotics/darknet_ros , darnet_ros, which is used in the project.
